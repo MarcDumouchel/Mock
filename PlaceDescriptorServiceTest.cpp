@@ -22,8 +22,19 @@ class HttpStub: public Http
     void initialize() override {}
     std::string get(const std::string& url)const override
     {
-        return R"({ "address":{"road":"Drury", "city" : "Fountain", "state" : "CO", "country":"US"
+        verify(url);
+        return R"({ "address":{"road":"Drury LN", "city" : "Fountain", "state" : "CO", "country":"US"
 }})";
+    }
+
+    void verify(const std::string& url) const
+    {
+        string urlStart("http://open.mapquestapi.com/nominatim/v1/reverse?format=json&");
+
+        auto expected(urlStart +
+                "lat=" + APlaceDescriptionService::ValidLatitude + "&"
+                + "lon=" + APlaceDescriptionService::ValidLongitude);
+        ASSERT_THAT(url, EndsWith(expected));
     }
 };
 

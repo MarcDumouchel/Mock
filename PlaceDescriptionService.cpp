@@ -10,7 +10,8 @@ PlaceDescriptionService::PlaceDescriptionService(Http* http) : http_(http) {}
 
 string PlaceDescriptionService::summaryDescription( const string& latitude, const string& longitude) const
 {
-    auto getRequestUrl = "";
+    string urlStart("http://open.mapquestapi.com/nominatim/v1/reverse?format=json&");
+    auto getRequestUrl = urlStart + "lat=" + latitude + "&lon=" + longitude;
     auto jsonResponse = http_->get(getRequestUrl);
 
     AddressExtractor extractor;
